@@ -238,7 +238,7 @@ void onReceive(int packetSize)
   int recipient = LoRa.read();          // Dirección del destinatario
   uint8_t sender = LoRa.read();         // Dirección del remitente
                                         // msg ID (High Byte first)
-  uint16_t sendResult = ((uint16_t)LoRa.read() << 7) | 
+  uint16_t sendResult = ((uint16_t)LoRa.read() << 8) | 
                             (uint16_t)LoRa.read();
 
   Serial.print("Received from: 0x");
