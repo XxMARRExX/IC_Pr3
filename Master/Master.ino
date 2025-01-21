@@ -25,7 +25,7 @@
 
 // NOTA: Ajustar estas variables 
 const uint8_t localAddress = 0xB0;     // Dirección de este dispositivo
-uint8_t destination = 0xFF;            // Dirección de destino, 0xFF es la dirección de broadcast
+uint8_t destination = 0xB2;            // Dirección de destino, 0xFF es la dirección de broadcast
 
 volatile bool txDoneFlag = true;       // Flag para indicar cuando ha finalizado una transmisión
 volatile bool transmitting = false;
@@ -45,12 +45,14 @@ typedef struct {
 double bandwidth_kHz[10] = {7.8E3, 10.4E3, 15.6E3, 20.8E3, 31.25E3,
                             41.7E3, 62.5E3, 125E3, 250E3, 500E3 };
 
-LoRaConfig_t nextConf   = { 5, 10, 5, 2};
+LoRaConfig_t nextConf   = { 6, 10, 5, 2};
 LoRaConfig_t currentConf = nextConf;
 LoRaConfig_t LastConf = currentConf;
 volatile int remoteRSSI = 0;
 volatile float remoteSNR = 0;
 
+volatile int lastGoodRSSI = 0;
+volatile float lastGoodSNR = 0;
 volatile int lastTime = 0;
 volatile int lastCorrectTime = 0;
 
@@ -308,6 +310,9 @@ void calculateParamChanges(uint16_t results) {
     //los parametros estan en sus rangos normales
     if (checkGoodParams(remoteRSSI, remoteSNR)) {
         lastCorrectTime = lastTime;
+        remoteRSSI = lastGoodRSSI;
+        remoteSNR = lastGoodSNR;
+
         LastConf = currentConf;
         currentConf = nextConf;
         nextParamSet(false);
@@ -360,7 +365,7 @@ void nextParamSet(bool nextParam) {
 
 int nextBandwidth() {
   int next = 0;
-  if (nextConf.bandwidth_index < 8) {
+  if (nextConf.bandwidth_index <= 8) {
     nextConf.bandwidth_index++;
   } else {
     next = 1;
@@ -388,7 +393,7 @@ void finishParamSet() {
 
   Serial.println("_______________________\n");
   Serial.println("Final stability test:");
-  Serial.print("RSSI: "); Serial.print(remoteRSSI); Serial.print(" dBm, SNR: "); Serial.println(remoteSNR);
+  Serial.print("RSSI: "); Serial.print(lastGoodRSSI); Serial.print(" dBm, SNR: "); Serial.println(lastGoodSNR);
   Serial.println("_______________________\n");
 
   Serial.print("Final transmission time: "); Serial.print(lastCorrectTime); Serial.println(" msecs");

@@ -25,7 +25,7 @@
 
 // NOTA: Ajustar estas variables 
 const uint8_t localAddress = 0xB2;     // Dirección de este dispositivo
-uint8_t destination = 0xFF;            // Dirección de destino, 0xFF es la dirección de broadcast
+uint8_t destination = 0xB0;            // Dirección de destino, 0xFF es la dirección de broadcast
 
 volatile bool txDoneFlag = true;       // Flag para indicar cuando ha finalizado una transmisión
 volatile bool transmitting = false;
@@ -41,7 +41,7 @@ typedef struct {
 double bandwidth_kHz[10] = {7.8E3, 10.4E3, 15.6E3, 20.8E3, 31.25E3,
                             41.7E3, 62.5E3, 125E3, 250E3, 500E3 };
 
-LoRaConfig_t thisNodeConf   = { 5, 10, 5, 2};
+LoRaConfig_t thisNodeConf   = { 6, 10, 5, 2};
 LoRaConfig_t LastConf = thisNodeConf;
 int remoteRSSI = 0;
 float remoteSNR = 0;
