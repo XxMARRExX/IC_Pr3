@@ -218,6 +218,12 @@ void onReceive(int packetSize)
     return;
   }
 
+  // Verificamos si el remitente es igual a la variable "destination"
+  if (sender != destination) {
+    Serial.println("Receiving error: Sender is not the expected.");
+    return;
+  }
+
   bool goodParams = checkGoodParams();
 
   sendMessageLogic();

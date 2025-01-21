@@ -240,7 +240,7 @@ void onReceive(int packetSize)
   int recipient = LoRa.read();          // Dirección del destinatario
   uint8_t sender = LoRa.read();         // Dirección del remitente
                                         // msg ID (High Byte first)
-  uint16_t sendResult = ((uint16_t)LoRa.read() << 7) | 
+  uint16_t sendResult = ((uint16_t)LoRa.read() << 8) | 
                             (uint16_t)LoRa.read();
 
   Serial.print("Received from: 0x");
@@ -252,6 +252,12 @@ void onReceive(int packetSize)
   // compartiendo la misma palabra de sincronización
   if ((recipient & localAddress) != localAddress ) {
     Serial.println("Receiving error: This message is not for me.");
+    return;
+  }
+
+  // Verificamos si el remitente es igual a la variable "destination"
+  if (sender != destination) {
+    Serial.println("Receiving error: Sender is not the expected.");
     return;
   }
 
@@ -310,8 +316,8 @@ void calculateParamChanges(uint16_t results) {
     //los parametros estan en sus rangos normales
     if (checkGoodParams(remoteRSSI, remoteSNR)) {
         lastCorrectTime = lastTime;
-        remoteRSSI = lastGoodRSSI;
-        remoteSNR = lastGoodSNR;
+        lastGoodRSSI = remoteRSSI;
+        lastGoodSNR = remoteSNR;
 
         LastConf = currentConf;
         currentConf = nextConf;
@@ -365,7 +371,7 @@ void nextParamSet(bool nextParam) {
 
 int nextBandwidth() {
   int next = 0;
-  if (nextConf.bandwidth_index <= 8) {
+  if (nextConf.bandwidth_index < 8) {
     nextConf.bandwidth_index++;
   } else {
     next = 1;
