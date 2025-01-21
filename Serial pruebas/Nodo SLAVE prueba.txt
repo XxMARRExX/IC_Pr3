@@ -1,0 +1,92 @@
+Nodo SLAVE
+_______________________
+LoRa Duplex with TxDone and Receive callbacks
+Using binary packets
+Charge status: Charge termination done
+Battery is connected: No
+Power is good: Yes
+Charge current (A): 0.51
+Charge voltage (V): 4.19
+Minimum system voltage(V): 3.50
+Battery voltage is below minimum system voltage: No
+Initilization of BQ24195L succeeded!
+LoRa init succeeded.
+
+Received from: 0xB0
+Sending packet ----> TX completed in 0 msecs
+Duty cycle: 0.0 %
+
+LoRa parameters changed:
+Bandwidth: 41700.00
+Spreading Factor: 10
+Coding Rate: 5
+Tx Power: 2
+
+Received from: 0xB0
+Sending packet ----> TX completed in 0 msecs
+Duty cycle: 0.0 %
+
+LoRa parameters changed:
+Bandwidth: 62500.00
+Spreading Factor: 10
+Coding Rate: 5
+Tx Power: 2
+
+Received from: 0xB0
+Sending packet ----> TX completed in 0 msecs
+Duty cycle: 0.0 %
+
+LoRa parameters changed:
+Bandwidth: 125000.00
+Spreading Factor: 10
+Coding Rate: 5
+Tx Power: 2
+
+Received from: 0xBE
+Sending packet ----> TX completed in 0 msecs
+Duty cycle: 0.0 %
+
+Bad parameters received. Returning to last good configuration.
+BW: 62500.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+
+Received from: 0x3E
+Receiving error: This message is not for me.
+Received from: 0xB0
+Sending packet ----> TX completed in 0 msecs
+Duty cycle: 0.0 %
+
+LoRa parameters changed:
+Bandwidth: 62500.00
+Spreading Factor: 9
+Coding Rate: 5
+Tx Power: 2
+
+Received from: 0xB0
+Sending packet ----> TX completed in 0 msecs
+Duty cycle: 0.0 %
+
+LoRa parameters changed:
+Bandwidth: 62500.00
+Spreading Factor: 8
+Coding Rate: 5
+Tx Power: 2
+
+Received from: 0xB0
+Sending packet ----> TX completed in 0 msecs
+Duty cycle: 0.0 %
+
+LoRa parameters changed:
+Bandwidth: 62500.00
+Spreading Factor: 7
+Coding Rate: 5
+Tx Power: 2
+
+Received from: 0xB0
+Sending packet ----> TX completed in 0 msecs
+Duty cycle: 0.0 %
+
+LoRa parameters changed:
+Bandwidth: 62500.00
+Spreading Factor: 7
+Coding Rate: 5
+Tx Power: 2

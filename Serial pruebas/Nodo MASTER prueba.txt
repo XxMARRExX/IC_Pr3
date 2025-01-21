@@ -1,0 +1,119 @@
+Nodo MASTER
+_______________________
+LoRa Duplex with TxDone and Receive callbacks
+Using binary packets
+Charge status: Charge termination done
+Battery is connected: No
+Power is good: Yes
+Charge current (A): 0.51
+Charge voltage (V): 4.19
+Minimum system voltage(V): 3.50
+Battery voltage is below minimum system voltage: No
+Initilization of BQ24195L succeeded!
+LoRa init succeeded.
+
+Sending packet ----> TX completed in 622 msecs
+Used parameters:BW: 41700.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 41700.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Duty cycle: 6.2 %
+
+Received from: 0xB2
+Parameters received:
+RSSI: -9 dBm, SNR: 10.00
+
+Sending packet ----> TX completed in 622 msecs
+Used parameters:BW: 41700.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 62500.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Duty cycle: 1.0 %
+
+Received from: 0xB2
+Parameters received:
+RSSI: -9 dBm, SNR: 10.00
+
+Sending packet ----> TX completed in 416 msecs
+Used parameters:BW: 62500.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 125000.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.7 %
+
+Received from: 0xB2
+Parameters received:
+RSSI: -10 dBm, SNR: 12.00
+
+Sending packet ----> TX completed in 209 msecs
+Used parameters:BW: 125000.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 250000.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.3 %
+
+Received from: 0xB2
+Parameters received:
+RSSI: -37 dBm, SNR: -4.00
+Bad parameters received. Keeping last configuration.
+BW: 62500.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+
+Sending packet ----> TX completed in 416 msecs
+Used parameters:BW: 62500.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 62500.00 kHz, SPF: 9, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.7 %
+
+Sending packet ----> TX completed in 416 msecs
+Used parameters:BW: 62500.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 62500.00 kHz, SPF: 9, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.7 %
+
+Sending packet ----> TX completed in 416 msecs
+Used parameters:BW: 62500.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 62500.00 kHz, SPF: 9, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.7 %
+
+Sending packet ----> TX completed in 416 msecs
+Used parameters:BW: 62500.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 62500.00 kHz, SPF: 9, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.7 %
+
+Sending packet ----> TX completed in 416 msecs
+Used parameters:BW: 62500.00 kHz, SPF: 10, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 62500.00 kHz, SPF: 9, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.7 %
+
+Received from: 0xB2
+Parameters received:
+RSSI: -9 dBm, SNR: 9.00
+
+Sending packet ----> TX completed in 209 msecs
+Used parameters:BW: 62500.00 kHz, SPF: 9, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 62500.00 kHz, SPF: 8, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.3 %
+
+Received from: 0xB2
+Parameters received:
+RSSI: -8 dBm, SNR: 9.00
+
+Sending packet ----> TX completed in 105 msecs
+Used parameters:BW: 62500.00 kHz, SPF: 8, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 62500.00 kHz, SPF: 7, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.2 %
+
+Received from: 0xB2
+Parameters received:
+RSSI: -8 dBm, SNR: 9.00
+
+Sending packet ----> TX completed in 64 msecs
+Used parameters:BW: 62500.00 kHz, SPF: 7, CR: 5, TxPwr: 2 dBm
+Parameters send:BW: 62500.00 kHz, SPF: 7, CR: 5, TxPwr: 2 dBm
+Duty cycle: 0.1 %
+
+Received from: 0xB2
+Parameters received:
+RSSI: -23 dBm, SNR: 8.00
+
+---------------- Configuration finished ----------------
+Parameters set:
+
+BW: 62500.00 kHz, SPF: 7, CR: 5, TxPwr: 2 dBm
+_______________________
+
+Final stability test:
+RSSI: -23 dBm, SNR: 8.00
+_______________________
+
+Final transmission time: 64 msecs
