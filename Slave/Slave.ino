@@ -41,7 +41,7 @@ typedef struct {
 double bandwidth_kHz[10] = {7.8E3, 10.4E3, 15.6E3, 20.8E3, 31.25E3,
                             41.7E3, 62.5E3, 125E3, 250E3, 500E3 };
 
-LoRaConfig_t thisNodeConf   = { 6, 10, 5, 2};
+LoRaConfig_t thisNodeConf   = { 5, 10, 5, 2};
 LoRaConfig_t LastConf = thisNodeConf;
 int remoteRSSI = 0;
 float remoteSNR = 0;
@@ -138,7 +138,12 @@ void sendMessageLogic(){
   //Serial.print(": ");
 
   //printBinaryPayload(payload, payloadLength);
-                  
+  /*
+  while(txDoneFlag && transmitting) {
+    // Esperamos
+  }
+  */
+
   uint32_t TxTime_ms = millis() - tx_begin_ms;
   Serial.print("----> TX completed in ");
   Serial.print(TxTime_ms);
@@ -180,7 +185,7 @@ void sendMessage()
   LoRa.write(uint8_t(-remoteRSSI * 2));
   // SNR puede estar en un rango de [20, -148] dBm
   LoRa.write(uint8_t(148 + remoteSNR));
-  LoRa.endPacket(true);                   // Finalizamos el paquete, pero no esperamos a
+  LoRa.endPacket();                   // Finalizamos el paquete, pero no esperamos a
                                           // finalice su transmisión
 }
 
@@ -220,8 +225,11 @@ void onReceive(int packetSize)
   if (goodParams) {
     changeLoRaParameters(cofiguration);
   } else {
+    thisNodeConf = LastConf;
     configureLoRa(LastConf);
     Serial.println("Bad parameters received. Returning to last good configuration.");
+    printLoRaConfig(LastConf);
+    Serial.println();
   }
   
 }
@@ -270,4 +278,16 @@ bool checkGoodParams() {
   if (remoteRSSI < -100) return false;
   if (remoteSNR < 0) return false;
   return true;
+}
+
+void printLoRaConfig(LoRaConfig_t config) {
+    Serial.print("BW: ");
+    Serial.print(bandwidth_kHz[config.bandwidth_index]);
+    Serial.print(" kHz, SPF: ");
+    Serial.print(config.spreadingFactor);
+    Serial.print(", CR: ");
+    Serial.print(config.codingRate);
+    Serial.print(", TxPwr: ");
+    Serial.print(config.txPower);
+    Serial.println(" dBm");
 }

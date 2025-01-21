@@ -45,10 +45,14 @@ typedef struct {
 double bandwidth_kHz[10] = {7.8E3, 10.4E3, 15.6E3, 20.8E3, 31.25E3,
                             41.7E3, 62.5E3, 125E3, 250E3, 500E3 };
 
-LoRaConfig_t thisNodeConf   = { 6, 10, 5, 2};
-LoRaConfig_t lastCorrectNodeConf = thisNodeConf;
+LoRaConfig_t nextConf   = { 5, 10, 5, 2};
+LoRaConfig_t currentConf = nextConf;
+LoRaConfig_t LastConf = currentConf;
 volatile int remoteRSSI = 0;
 volatile float remoteSNR = 0;
+
+volatile int lastTime = 0;
+volatile int lastCorrectTime = 0;
 
 volatile bool finishConfig = false;
 
@@ -82,22 +86,22 @@ void setup()
   }
 
   // Configuramos algunos parámetros de la radio
-  LoRa.setSignalBandwidth(long(bandwidth_kHz[thisNodeConf.bandwidth_index])); 
+  LoRa.setSignalBandwidth(long(bandwidth_kHz[nextConf.bandwidth_index])); 
                                   // 7.8E3, 10.4E3, 15.6E3, 20.8E3, 31.25E3
                                   // 41.7E3, 62.5E3, 125E3, 250E3, 500E3 
                                   // Multiplicar por dos el ancho de banda
                                   // supone dividir a la mitad el tiempo de Tx
                                   
-  LoRa.setSpreadingFactor(thisNodeConf.spreadingFactor);     
+  LoRa.setSpreadingFactor(nextConf.spreadingFactor);     
                                   // [6, 12] Aumentar el spreading factor incrementa 
                                   // de forma significativa el tiempo de Tx
                                   // SPF = 6 es un valor especial
                                   // Ver tabla 12 del manual del SEMTECH SX1276
   
-  LoRa.setCodingRate4(thisNodeConf.codingRate);         
+  LoRa.setCodingRate4(nextConf.codingRate);         
                                   // [5, 8] 5 da un tiempo de Tx menor
                                   
-  LoRa.setTxPower(thisNodeConf.txPower, PA_OUTPUT_PA_BOOST_PIN); 
+  LoRa.setTxPower(nextConf.txPower, PA_OUTPUT_PA_BOOST_PIN); 
                                   // Rango [2, 20] en dBm
                                   // Importante seleccionar un valor bajo para pruebas
                                   // a corta distancia y evitar saturar al receptor
@@ -138,21 +142,21 @@ void sendMessageLogic(){
       
   if ((!transmitting && ((millis() - lastSendTime_ms) > txInterval_ms))) {
     
+    /*
     if (flagSlaveMessage != 2) {
       if (flagSlaveMessage == 1) {
-        thisNodeConf = lastCorrectNodeConf;
-        nextParamSet(true);
-        configureLoRa(thisNodeConf);
-        flagSlaveMessage = 0;
+        finishParamSet();
+        finishConfig = true;
+        return;
       }
       flagSlaveMessage = 1;
-    }
+    }*/
     
     transmitting = true;
     txDoneFlag = false;
     tx_begin_ms = millis();
   
-    sendConfigurationMessage(thisNodeConf);
+    sendConfigurationMessage(nextConf);
     Serial.print("Sending packet ");
     //Serial.print(msgCount++);
     //Serial.print(": ");
@@ -165,6 +169,7 @@ void sendMessageLogic(){
     Serial.print("----> TX completed in ");
     Serial.print(TxTime_ms);
     Serial.println(" msecs");
+    lastTime = TxTime_ms;
     
     // Ajustamos txInterval_ms para respetar un duty cycle del 1% 
     uint32_t lapse_ms = tx_begin_ms - lastSendTime_ms;
@@ -172,10 +177,10 @@ void sendMessageLogic(){
     float duty_cycle = (100.0f * TxTime_ms) / lapse_ms;
 
     Serial.print("Used parameters:");
-    printLoRaConfig(lastCorrectNodeConf);
+    printLoRaConfig(currentConf);
 
     Serial.print("Parameters send:");
-    printLoRaConfig(thisNodeConf);
+    printLoRaConfig(nextConf);
     
     Serial.print("Duty cycle: ");
     Serial.print(duty_cycle, 1);
@@ -186,9 +191,11 @@ void sendMessageLogic(){
       txInterval_ms = TxTime_ms * 100;
     }
 
+    /*
     if (duty_cycle <= 0.5f) {
       txInterval_ms = TxTime_ms / 100;
     }
+    */
     
     transmitting = false;
     if (flagSlaveMessage == 2) flagSlaveMessage = 0;
@@ -297,19 +304,23 @@ void calculateParamChanges(uint16_t results) {
     Serial.print(remoteRSSI);
     Serial.print(" dBm, SNR: ");
     Serial.println(remoteSNR);
-    
+
     //los parametros estan en sus rangos normales
     if (checkGoodParams(remoteRSSI, remoteSNR)) {
-        lastCorrectNodeConf = thisNodeConf;
+        lastCorrectTime = lastTime;
+        LastConf = currentConf;
+        currentConf = nextConf;
         nextParamSet(false);
-        configureLoRa(lastCorrectNodeConf);
+        configureLoRa(currentConf);
         
     }
     else {
         Serial.println("Bad parameters received. Keeping last configuration.");
-        thisNodeConf = lastCorrectNodeConf;
+        currentConf = LastConf;
+        nextConf = currentConf;
         nextParamSet(true);
-        configureLoRa(lastCorrectNodeConf);
+        printLoRaConfig(currentConf);
+        configureLoRa(currentConf);
         
     }
     Serial.println();
@@ -349,8 +360,8 @@ void nextParamSet(bool nextParam) {
 
 int nextBandwidth() {
   int next = 0;
-  if (thisNodeConf.bandwidth_index < 8) {
-    thisNodeConf.bandwidth_index++;
+  if (nextConf.bandwidth_index < 8) {
+    nextConf.bandwidth_index++;
   } else {
     next = 1;
   }
@@ -359,8 +370,8 @@ int nextBandwidth() {
 
 int nextSpreadingFactor() {
   int next = 0;
-  if (thisNodeConf.spreadingFactor > 7) {
-    thisNodeConf.spreadingFactor--;
+  if (nextConf.spreadingFactor > 7) {
+    nextConf.spreadingFactor--;
   } else {
     next = 1;
   }
@@ -373,12 +384,12 @@ void finishParamSet() {
   Serial.println("---------------- Configuration finished ----------------");
   
   Serial.println("Parameters set:\n");
-  printLoRaConfig(lastCorrectNodeConf);
+  printLoRaConfig(currentConf);
 
   Serial.println("_______________________\n");
   Serial.println("Final stability test:");
   Serial.print("RSSI: "); Serial.print(remoteRSSI); Serial.print(" dBm, SNR: "); Serial.println(remoteSNR);
   Serial.println("_______________________\n");
 
-  Serial.print("Final transmission time: ");
+  Serial.print("Final transmission time: "); Serial.print(lastCorrectTime); Serial.println(" msecs");
 }
